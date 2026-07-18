@@ -1,0 +1,60 @@
+# Stack SpriteForge : app + MinIO (archivage des images) + MongoDB (historique des générations).
+#
+# Local  : docker compose up --build   →  http://localhost:3000
+# Dokploy: service "Compose", variables dans l'onglet Environment (voir .env.example),
+#          puis domaine via l'onglet Domains → service app, port 3000
+#          (dans ce cas, supprimer le mapping "ports" du service app : Traefik s'en charge).
+
+services:
+  app:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "${APP_PORT:-3000}:3000"
+    environment:
+      MONGO_URL: mongodb://mongo:27017/spriteforge
+      MINIO_ENDPOINT: minio
+      MINIO_PORT: "9000"
+      MINIO_USE_SSL: "false"
+      MINIO_ACCESS_KEY: ${MINIO_ROOT_USER:-spriteforge}
+      MINIO_SECRET_KEY: ${MINIO_ROOT_PASSWORD:-spriteforge-dev-secret}
+      MINIO_BUCKET: ${MINIO_BUCKET:-spriteforge}
+    depends_on:
+      mongo:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+
+  mongo:
+    image: mongo:8
+    restart: unless-stopped
+    volumes:
+      - mongo-data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  minio:
+    image: minio/minio:latest
+    restart: unless-stopped
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-spriteforge}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-spriteforge-dev-secret}
+    volumes:
+      - minio-data:/data
+    # ports:
+    #   - "9001:9001"   # console web MinIO — à décommenter pour du debug local uniquement
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+volumes:
+  mongo-data:
+  minio-data:

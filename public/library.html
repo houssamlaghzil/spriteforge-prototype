@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SpriteForge — Bibliothèque</title><link rel="icon" href="data:,"><link rel="stylesheet" href="/style.css"></head>
+<body><main class="wrap">
+<header><div class="brand"><i></i><b>SpriteForge</b><span>Prototype</span></div><nav class="nav"><a href="/">Studio</a><a href="/library.html" class="on" aria-current="page">Bibliothèque</a></nav></header>
+<section class="libhero">
+<div><p>ARCHIVE DES GÉNÉRATIONS</p><h1>Bibliothèque.</h1>
+<div class="lead">Chaque génération est archivée avec ses frames, sa sprite sheet et son ZIP. Survole une carte pour voir l’animation, rejoue-la en grand, retélécharge tout.</div></div>
+<div class="libstats" id="libStats" hidden>
+<div><b id="stTotal">–</b><span>générations</span></div>
+<div><b id="stFrames">–</b><span>frames archivées</span></div>
+<div><b id="stCost">–</b><span>coût sortie estimé</span></div>
+</div>
+</section>
+<div id="state"></div>
+<div class="cards" id="cards"></div>
+<div class="pmodal" id="pModal" hidden>
+<div class="pback" id="pBack"></div>
+<div class="pcard" role="dialog" aria-modal="true" aria-labelledby="pTitle">
+<div class="phead"><div><b id="pTitle"></b><small id="pMeta"></small></div><button id="pClose" aria-label="Fermer le lecteur">✕</button></div>
+<div class="pstage" id="pStage"><canvas id="pCanvas"></canvas><div class="pload" id="pLoad">Chargement de la sprite sheet…</div></div>
+<div class="animctl"><button id="pPlay" type="button">⏸ Pause</button><label>Vitesse <b id="pFpsVal">12 img/s</b><input id="pFps" type="range" min="1" max="30" step="1" value="12"></label><label>Zoom <b id="pZoomVal">100%</b><input id="pZoom" type="range" min="25" max="200" step="5" value="100"></label><span id="pInfo"></span></div>
+</div>
+</div>
+</main><script src="/library.js"></script></body></html>

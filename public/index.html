@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SpriteForge</title><link rel="icon" href="data:,"><link rel="stylesheet" href="/style.css"></head>
+<body><main class="wrap">
+<header><div class="brand"><i></i><b>SpriteForge</b><span>Prototype</span></div><nav class="nav"><a href="/" class="on" aria-current="page">Studio</a><a href="/library.html">Bibliothèque</a></nav></header>
+<section class="hero"><div><p>CHARACTER ANIMATION PIPELINE</p><h1>Une image.<br>Des dizaines de frames cohérentes.</h1><div class="lead">Chaque frame est générée séparément en haute définition puis assemblée automatiquement en sprite sheet.</div></div><div class="cost"><span>Coût sortie estimé</span><b id="bigCost">$1.272</b><small id="costMeta">24 images · GPT Image 2</small></div></section>
+<section class="grid">
+<div class="panel"><h3><span>01</span> Personnage source</h3><label class="drop"><img id="preview" hidden><div id="dropText"><em>↑</em><b>Dépose ton personnage ici</b><small>PNG, JPEG, WebP · 20 Mo max</small></div><input id="image" type="file" accept="image/png,image/jpeg,image/webp"></label></div>
+<div class="panel"><h3><span>02</span> Direction d’animation</h3><label>Émotion</label><div class="emotion"><button data-e="neutral" class="on"><b>Neutre</b><small>Froid, polyvalent</small></button><button data-e="joyful"><b>Enjoué</b><small>Chaleureux, subtil</small></button><button data-e="angry"><b>Colère</b><small>Tendu, contrôlé</small></button></div>
+<div class="tw"><label>Frames<select id="frames"><option>24</option><option>45</option><option>100</option></select></label><label>Qualité<select id="quality"><option>low</option><option selected>medium</option><option>high</option></select></label></div>
+<label>Style visuel<textarea id="style" rows="4">Semi-cartoon graphic novel style, clean line art, crisp facial features, controlled cel shading.</textarea></label>
+<label>Couleur de fond (appliquée au pixel près sur toutes les frames)<input id="bgcolor" type="color" value="#6b7a96"></label></div>
+<div class="panel"><h3><span>03</span> Modèle & coût</h3><label>Modèle<select id="model"><option value="gpt-image-2">GPT Image 2 — recommandé</option><option value="gpt-image-1.5">GPT Image 1.5 — déprécié</option><option value="gpt-image-1">GPT Image 1 — déprécié</option><option value="gpt-image-1-mini">GPT Image 1 Mini — déprécié</option></select></label>
+<label>Taille<select id="size"><option>1024x1024</option><option>1024x1536</option><option>1536x1024</option></select></label>
+<div class="price"><div><span>Prix sortie / image</span><b id="per">$0.053</b></div><div><span>Total sorties</span><b id="total">$1.272</b></div><p>Calcul exact à partir de la table officielle OpenAI pour la <b>sortie image</b>. Les requêtes d’édition ajoutent des tokens d’entrée image + texte variables.</p></div>
+<label>Clé API OpenAI<input id="key" type="password" placeholder="sk-••••••••••••"></label><small class="sec">La clé est transmise uniquement à ton serveur local pour cette requête et n’est pas persistée.</small></div>
+</section>
+<section class="action"><div><b id="pipeline">24 générations séparées</b><small>gabarit → frames ancrées → recadrage + normalisation → sprite sheet → ZIP</small></div><button id="go">Générer le gabarit</button></section>
+<section class="panel" id="tplPanel" hidden><h3><span>G</span> Gabarit de référence</h3>
+<div class="tplrow"><div class="tplbox" id="tplBox"><img id="tplImg" alt="Gabarit"></div>
+<div class="tplinfo"><p>Toutes les frames seront générées à partir de cette image : c’est elle qui fixe l’identité, le cadrage et le style. Vérifie-la avant de lancer le lot — régénère-la si tu changes le style, l’émotion ou l’image source.</p><button id="tplRedo" type="button">↻ Régénérer le gabarit</button></div></div>
+</section>
+<div id="progress" hidden><div class="pbar"><i id="pfill"></i></div><div class="pmeta"><span id="ptext"></span><span id="peta"></span></div></div>
+<div id="msg"></div>
+<section class="panel preview" id="previewPanel" hidden><h3><span>04</span> Aperçu de l’animation</h3>
+<div class="animbox"><canvas id="anim"></canvas></div>
+<div class="animctl"><button id="playBtn" type="button">⏸ Pause</button><label>Vitesse <b id="fpsVal">12 img/s</b><input id="fps" type="range" min="1" max="30" step="1" value="12"></label><label>Zoom <b id="zoomVal">100%</b><input id="zoom" type="range" min="25" max="200" step="5" value="100"></label><span id="frameInfo"></span></div>
+</section>
+</main><script src="/app.js"></script></body></html>
