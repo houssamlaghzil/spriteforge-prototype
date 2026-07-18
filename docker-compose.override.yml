@@ -1,0 +1,8 @@
+# Surcharge LOCALE uniquement : publie le port de l'app sur la machine de dev.
+# Docker Compose fusionne ce fichier automatiquement avec docker-compose.yml quand on
+# lance `docker compose up` sans -f. Dokploy, lui, lance avec `-f ./docker-compose.yml`
+# explicite et ignore donc ce fichier — aucun port n'est publié sur le VPS.
+services:
+  app:
+    ports:
+      - "${APP_PORT:-3000}:3000"

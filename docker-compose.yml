@@ -1,16 +1,17 @@
 # Stack SpriteForge : app + MinIO (archivage des images) + MongoDB (historique des générations).
 #
-# Local  : docker compose up --build   →  http://localhost:3000
-# Dokploy: service "Compose", variables dans l'onglet Environment (voir .env.example),
-#          puis domaine via l'onglet Domains → service app, port 3000
-#          (dans ce cas, supprimer le mapping "ports" du service app : Traefik s'en charge).
+# Local  : docker compose up --build  →  http://localhost:3000
+#          (le mapping de port vient de docker-compose.override.yml, fusionné automatiquement)
+# Dokploy: service "Compose" — aucun port publié ici (Traefik route par domaine) :
+#          après le premier deploy, onglet Domains → Add Domain, service `app`, port 3000, HTTPS.
+#          Variables dans l'onglet Environment (voir .env.example).
 
 services:
   app:
     build: .
     restart: unless-stopped
-    ports:
-      - "${APP_PORT:-3000}:3000"
+    expose:
+      - "3000"
     environment:
       MONGO_URL: mongodb://mongo:27017/spriteforge
       MINIO_ENDPOINT: minio
